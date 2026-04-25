@@ -14,6 +14,7 @@ const nextConfig = {
     optimizePackageImports: ['framer-motion', 'lucide-react'],
     optimizeServerReact: true,
   },
+  turbopack: {},
   webpack: (config, { isServer, nextRuntime }) => {
     // Optimize bundle splitting
     if (!isServer) {
