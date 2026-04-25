@@ -18,7 +18,7 @@ describe("AttestationRegistry", function () {
   ) {
     const network = await hre.ethers.provider.getNetwork();
     const domain = {
-      name: "VerifiableAI",
+      name: "PROVET",
       version: "1",
       chainId: Number(network.chainId),
       verifyingContract: await attestationRegistry.getAddress(),
