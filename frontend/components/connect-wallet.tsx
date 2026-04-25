@@ -10,6 +10,9 @@ const ConnectButton = dynamic(
   { ssr: false }
 );
 
+const BTN =
+  "h-8 px-3 sm:px-4 text-[10px] sm:text-[11px] font-mono font-semibold tracking-[0.1em] uppercase border border-orange-600 bg-orange-600 text-white hover:bg-orange-700 hover:border-orange-700 transition-all duration-200 whitespace-nowrap cursor-pointer";
+
 export function ConnectWalletButton() {
   const [mounted, setMounted] = React.useState(false);
   const { isWeb3Enabled, enableWeb3 } = useWeb3Context();
@@ -27,53 +30,85 @@ export function ConnectWalletButton() {
   // If Web3 is not enabled, show styled button to enable it
   if (!isWeb3Enabled) {
     return (
-      <button
-        onClick={enableWeb3}
-        className="h-8 px-3 sm:px-4 text-[10px] sm:text-[11px] font-mono font-semibold tracking-[0.1em] uppercase border border-orange-600 bg-orange-600 text-white hover:bg-orange-700 hover:border-orange-700 transition-all duration-200 whitespace-nowrap"
-      >
+      <button onClick={enableWeb3} className={BTN}>
         Connect Wallet
       </button>
     );
   }
 
-  // Web3 is enabled - show RainbowKit ConnectButton with custom styling wrapper
+  // Web3 is enabled — use ConnectButton.Custom for full style control
   return (
-    <React.Suspense fallback={
-      <div className="h-8 w-full max-w-[140px] border border-foreground/20 bg-foreground/5 animate-pulse" />
-    }>
-      <div className="rk-button-wrapper">
-        <ConnectButton
-          accountStatus="address"
-          chainStatus="icon"
-          showBalance={false}
-        />
-      </div>
-      <style jsx>{`
-        .rk-button-wrapper :global(button) {
-          height: 2rem !important;
-          padding: 0 1rem !important;
-          font-size: 11px !important;
-          font-family: ui-monospace, monospace !important;
-          font-weight: 600 !important;
-          letter-spacing: 0.1em !important;
-          text-transform: uppercase !important;
-          border: 1px solid #ea580c !important;
-          background: #ea580c !important;
-          color: white !important;
-          border-radius: 0 !important;
-          transition: all 0.2s !important;
-        }
-        .rk-button-wrapper :global(button:hover) {
-          background: #c2410c !important;
-          border-color: #c2410c !important;
-        }
-        .rk-button-wrapper :global([data-testid="account-button"]),
-        .rk-button-wrapper :global([data-testid="connect-button"]) {
-          height: 2rem !important;
-          min-height: 2rem !important;
-          padding: 0 1rem !important;
-        }
-      `}</style>
+    <React.Suspense
+      fallback={
+        <div className="h-8 w-[140px] border border-foreground/20 bg-foreground/5 animate-pulse" />
+      }
+    >
+      <ConnectButton.Custom>
+        {({
+          account,
+          chain,
+          openAccountModal,
+          openChainModal,
+          openConnectModal,
+          mounted: rkMounted,
+        }) => {
+          const ready = rkMounted;
+          const connected = ready && account && chain;
+
+          if (!ready) {
+            return (
+              <div className="h-8 w-[140px] border border-foreground/20 bg-foreground/5 animate-pulse" />
+            );
+          }
+
+          if (!connected) {
+            return (
+              <button onClick={openConnectModal} className={BTN}>
+                Connect Wallet
+              </button>
+            );
+          }
+
+          if (chain.unsupported) {
+            return (
+              <button
+                onClick={openChainModal}
+                className="h-8 px-3 sm:px-4 text-[10px] sm:text-[11px] font-mono font-semibold tracking-[0.1em] uppercase border border-red-600 bg-red-600 text-white hover:bg-red-700 hover:border-red-700 transition-all duration-200 whitespace-nowrap cursor-pointer"
+              >
+                Wrong Network
+              </button>
+            );
+          }
+
+          return (
+            <div className="flex items-center gap-1">
+              {/* Chain button */}
+              <button
+                onClick={openChainModal}
+                className="h-8 px-2 border border-orange-600 bg-orange-600 text-white hover:bg-orange-700 hover:border-orange-700 transition-all duration-200 cursor-pointer flex items-center"
+                title={chain.name}
+              >
+                {chain.hasIcon && chain.iconUrl ? (
+                  <img
+                    src={chain.iconUrl}
+                    alt={chain.name}
+                    className="w-4 h-4"
+                  />
+                ) : (
+                  <span className="text-[10px] font-mono font-semibold">
+                    {chain.name?.slice(0, 3).toUpperCase()}
+                  </span>
+                )}
+              </button>
+
+              {/* Account button */}
+              <button onClick={openAccountModal} className={BTN}>
+                {account.displayName}
+              </button>
+            </div>
+          );
+        }}
+      </ConnectButton.Custom>
     </React.Suspense>
   );
 }
