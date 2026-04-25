@@ -4,7 +4,7 @@ import { Navbar } from "@/components/navbar"
 import { motion, AnimatePresence } from "framer-motion"
 import { useState, useMemo, useEffect } from "react"
 import { Search, Filter, ChevronLeft, ChevronRight, X } from "lucide-react"
-import { createProvet } from "@/lib/sdk"
+import { createRovet } from "@/lib/sdk"
 import type { Model } from "@/lib/types"
 
 const ease = [0.22, 1, 0.36, 1] as const
@@ -45,7 +45,7 @@ export default function ModelsPage() {
     async function fetchModels() {
       setIsLoading(true)
       try {
-        const sdk = createProvet({ chain: "baseSepolia" })
+        const sdk = createRovet({ chain: "baseSepolia" })
         const chainModels = await sdk.getAllModels()
         
         if (chainModels.length > 0) {

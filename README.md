@@ -1,4 +1,4 @@
-# PROVET
+# ROVET
 
 On-chain AI model provenance protocol. Register AI models, attest to predictions with EIP-712 signatures, and verify which model made every decision — all on Base.
 
@@ -6,7 +6,7 @@ On-chain AI model provenance protocol. Register AI models, attest to predictions
 
 ## Overview
 
-PROVET is a decentralized protocol for establishing trust and accountability in AI systems. It provides an immutable, on-chain registry where AI model owners can register their models, cryptographically attest to predictions using EIP-712 typed data signatures, and allow anyone to independently verify which model produced a given output.
+ROVET is a decentralized protocol for establishing trust and accountability in AI systems. It provides an immutable, on-chain registry where AI model owners can register their models, cryptographically attest to predictions using EIP-712 typed data signatures, and allow anyone to independently verify which model produced a given output.
 
 The protocol is designed for teams and organizations that need transparent, auditable records of AI model behavior — whether for regulatory compliance, user trust, or internal governance.
 
@@ -17,7 +17,7 @@ The protocol is designed for teams and organizations that need transparent, audi
 The project is organized into three packages:
 
 ```
-provet/
+rovet/
   contracts/     Solidity smart contracts (Hardhat)
   frontend/      Web application (Next.js 16, React, wagmi)
   subgraph/      The Graph indexer for querying on-chain data
@@ -73,8 +73,8 @@ A Graph Protocol subgraph that indexes ModelRegistered, ModelUpdated, Attestatio
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Shajar77/PROVET.git
-cd PROVET
+git clone https://github.com/Shajar77/ROVET.git
+cd ROVET
 ```
 
 ### 2. Smart Contracts
@@ -180,7 +180,7 @@ frontend/
     navigation-loader.tsx      Route change progress bar
     page-loader.tsx            Full-page loading spinner
   lib/
-    sdk.ts                     PROVET SDK (contract interaction layer)
+    sdk.ts                     ROVET SDK (contract interaction layer)
     contracts.ts               Contract ABIs and addresses
     types.ts                   TypeScript type definitions
   hooks/
@@ -211,7 +211,7 @@ subgraph/
 The attestation system uses the following EIP-712 domain:
 
 ```
-name:               PROVET
+name:               ROVET
 version:            1
 chainId:            <chain_id>
 verifyingContract:  <AttestationRegistry_address>

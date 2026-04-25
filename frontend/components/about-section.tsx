@@ -87,7 +87,7 @@ export function AboutSection() {
         className="flex items-center gap-2 sm:gap-4 mb-6 sm:mb-8"
       >
         <span className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground font-mono">
-          {"// SECTION: ABOUT_PROVET"}
+          {"// SECTION: ABOUT_ROVET"}
         </span>
         <div className="flex-1 border-t border-border" />
         <BlinkDot />
@@ -177,7 +177,7 @@ export function AboutSection() {
                 className="flex flex-col gap-4"
               >
                 <p className="text-[11px] sm:text-xs lg:text-sm font-mono text-muted-foreground leading-relaxed">
-                  PROVET provides the trust layer between AI models and their users.
+                  ROVET provides the trust layer between AI models and their users.
                   No opaque decisions. No unverifiable claims. Just on-chain registration,
                   cryptographically signed predictions, and transparent verification across
                   every model in the network.

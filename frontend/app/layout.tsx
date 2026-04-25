@@ -16,11 +16,11 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'PROVET | On-Chain Model Provenance Protocol',
+  title: 'ROVET | On-Chain Model Provenance Protocol',
   description:
     'Register AI models on-chain, attest to predictions with cryptographic signatures, and verify which model made every decision. Built on Base with EIP-712 signatures for transparent AI accountability.',
   keywords: [
-    'PROVET',
+    'ROVET',
     'AI model registry',
     'blockchain AI',
     'model provenance',
@@ -33,9 +33,9 @@ export const metadata: Metadata = {
     'cryptographic signatures',
     'AI accountability',
   ],
-  authors: [{ name: 'PROVET' }],
-  creator: 'PROVET',
-  publisher: 'PROVET',
+  authors: [{ name: 'ROVET' }],
+  creator: 'ROVET',
+  publisher: 'ROVET',
   robots: {
     index: true,
     follow: true,
@@ -50,17 +50,17 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    title: 'PROVET | On-Chain Model Provenance Protocol',
+    title: 'ROVET | On-Chain Model Provenance Protocol',
     description:
       'Register AI models on-chain, attest to predictions with cryptographic signatures, and verify which model made every decision. Built on Base with EIP-712 signatures.',
-    siteName: 'PROVET',
+    siteName: 'ROVET',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'PROVET | On-Chain Model Provenance',
+    title: 'ROVET | On-Chain Model Provenance',
     description:
       'Register AI models on-chain and verify predictions with cryptographic signatures. Transparent AI accountability built on Base.',
-    creator: '@provet_ai',
+    creator: '@rovet_ai',
   },
   category: 'technology',
 }

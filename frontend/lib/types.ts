@@ -1,4 +1,4 @@
-// TypeScript types for PROVET SDK
+// TypeScript types for ROVET SDK
 
 import { Address, Hash } from 'viem';
 
@@ -104,7 +104,7 @@ export interface PredictionOutput {
 }
 
 // SDK Configuration
-export interface ProvetConfig {
+export interface RovetConfig {
   chain: SupportedChain;
   modelRegistryAddress?: Address;
   attestationRegistryAddress?: Address;

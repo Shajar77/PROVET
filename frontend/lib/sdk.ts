@@ -1,4 +1,4 @@
-// PROVET SDK - Main entry point
+// ROVET SDK - Main entry point
 import {
   createPublicClient,
   createWalletClient,
@@ -21,7 +21,7 @@ import {
   ModelUpdateInput,
   AttestationInput,
   VerificationResult,
-  ProvetConfig,
+  RovetConfig,
   TransactionResult,
   ProtocolStats,
   SupportedChain,
@@ -40,14 +40,14 @@ class SDKError extends Error {
   }
 }
 
-export class Provet {
+export class Rovet {
   private chain: SupportedChain;
   private modelRegistryAddress: Address;
   private attestationRegistryAddress: Address;
   private rpcUrl: string;
   private subgraphUrl: string | null = null;
 
-  constructor(config: ProvetConfig) {
+  constructor(config: RovetConfig) {
     this.chain = config.chain;
     
     // Set addresses
@@ -311,7 +311,7 @@ export class Provet {
       const deadline = BigInt(Math.floor(Date.now() / 1000) + deadlineMinutes * 60);
 
       const domain = {
-        name: 'PROVET',
+        name: 'ROVET',
         version: '1',
         chainId: chain.id,
         verifyingContract: this.attestationRegistryAddress,
@@ -699,6 +699,6 @@ export class Provet {
 }
 
 // Export factory function
-export function createProvet(config: ProvetConfig): Provet {
-  return new Provet(config);
+export function createRovet(config: RovetConfig): Rovet {
+  return new Rovet(config);
 }

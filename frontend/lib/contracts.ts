@@ -1,4 +1,4 @@
-// Contract addresses and ABIs for PROVET
+// Contract addresses and ABIs for ROVET
 import { Abi } from 'viem';
 
 // Base Sepolia testnet addresses

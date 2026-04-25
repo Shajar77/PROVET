@@ -42,7 +42,7 @@ const rainbowTheme = (() => {
 const PROJECT_ID = "14fa06d18e2d81e027a24a4edbccdfc1";
 
 const config = getDefaultConfig({
-  appName: "PROVET",
+  appName: "ROVET",
   projectId: PROJECT_ID,
   chains,
   transports,
@@ -55,8 +55,8 @@ export default function Web3Provider({ children }: { children: React.ReactNode }
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider
           appInfo={{
-            appName: "PROVET",
-            learnMoreUrl: "https://docs.provet.ai",
+            appName: "ROVET",
+            learnMoreUrl: "https://docs.rovet.ai",
           }}
           theme={rainbowTheme}
         >

@@ -1,6 +1,6 @@
-# PROVET Frontend
+# ROVET Frontend
 
-Next.js 16 web application for the PROVET on-chain AI model provenance protocol.
+Next.js 16 web application for the ROVET on-chain AI model provenance protocol.
 
 ## Setup
 

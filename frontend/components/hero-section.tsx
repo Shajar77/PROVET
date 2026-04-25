@@ -55,7 +55,7 @@ export function HeroSection() {
           transition={{ duration: 0.5, delay: 0.45, ease }}
           className="text-[11px] sm:text-xs md:text-sm text-muted-foreground max-w-xs sm:max-w-sm md:max-w-md mb-5 sm:mb-6 leading-relaxed font-mono px-2 sm:px-0"
         >
-          PROVET is the on-chain registry for AI model provenance. Register models, attest to predictions with EIP-712 signatures, and prove which AI made every decision.
+          ROVET is the on-chain registry for AI model provenance. Register models, attest to predictions with EIP-712 signatures, and prove which AI made every decision.
         </motion.p>
 
         {/* CTA Button */}

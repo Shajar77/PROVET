@@ -23,7 +23,7 @@ const FAQS = [
     answer: "EIP-712 is an Ethereum standard for structured data signing. It allows users to see exactly what they're signing in a human-readable format, rather than obscure hexadecimal strings. This makes the verification process transparent and secure."
   },
   {
-    question: "IS PROVET FREE TO USE?",
+    question: "IS ROVET FREE TO USE?",
     answer: "Yes, the protocol itself is free. You only pay gas fees on Base Sepolia (fractions of a cent per transaction). Registering a model costs ~$0.001, and creating an attestation costs even less. We're committed to making AI verification accessible to everyone."
   },
   {

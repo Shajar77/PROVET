@@ -6,7 +6,7 @@ import { useState } from "react"
 import { ArrowRight } from "lucide-react"
 import { useAccount } from "wagmi"
 import { keccak256, toBytes } from "viem"
-import { createProvet } from "@/lib/sdk"
+import { createRovet } from "@/lib/sdk"
 import { useTransaction } from "@/hooks/use-transaction"
 import { useWeb3Context } from "@/app/web3-context"
 import toast from "react-hot-toast"
@@ -57,7 +57,7 @@ function RegisterForm() {
       return
     }
 
-    const sdk = createProvet({ chain: "baseSepolia" })
+    const sdk = createRovet({ chain: "baseSepolia" })
     const modelHash = keccak256(
       toBytes(`${formData.name}:${formData.version}:${Date.now()}`)
     )

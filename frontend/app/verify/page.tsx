@@ -5,7 +5,7 @@ import { motion } from "framer-motion"
 import { useState } from "react"
 import { ArrowRight, Check, X } from "lucide-react"
 import { keccak256, toBytes } from "viem"
-import { createProvet } from "@/lib/sdk"
+import { createRovet } from "@/lib/sdk"
 import toast from "react-hot-toast"
 
 const ease = [0.22, 1, 0.36, 1] as const
@@ -34,7 +34,7 @@ export default function VerifyPage() {
     setVerificationResult(null)
 
     try {
-      const sdk = createProvet({ chain: "baseSepolia" })
+      const sdk = createRovet({ chain: "baseSepolia" })
 
       // If user provided raw input/output strings, hash them
       const inputHash = inputData.startsWith("0x") 
