@@ -2,6 +2,11 @@
 
 On-chain AI model provenance protocol. Register AI models, attest to predictions with EIP-712 signatures, and verify which model made every decision — all on Base.
 
+**Live Contracts (Base Sepolia)**
+
+- ModelRegistry: [0x301651C55623E5B022b35e22d7c3935b3fAfBc8F](https://sepolia.basescan.org/address/0x301651C55623E5B022b35e22d7c3935b3fAfBc8F)
+- AttestationRegistry: [0x3337BA7Ea7E2dEAd933d2d716407C0Bf003bD247](https://sepolia.basescan.org/address/0x3337BA7Ea7E2dEAd933d2d716407C0Bf003bD247)
+
 ---
 
 ## Overview

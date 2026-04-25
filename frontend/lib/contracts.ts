@@ -4,8 +4,8 @@ import { Abi } from 'viem';
 // Base Sepolia testnet addresses
 export const CONTRACT_ADDRESSES = {
   baseSepolia: {
-    modelRegistry: '0x...', // Replace with deployed address
-    attestationRegistry: '0x...', // Replace with deployed address
+    modelRegistry: '0x301651C55623E5B022b35e22d7c3935b3fAfBc8F',
+    attestationRegistry: '0x3337BA7Ea7E2dEAd933d2d716407C0Bf003bD247',
   },
   base: {
     modelRegistry: '0x...', // Replace with deployed address
