@@ -1,0 +1,74 @@
+[
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "name": "id", "type": "bytes32" },
+      { "indexed": true, "name": "modelId", "type": "bytes32" },
+      { "name": "inputHash", "type": "bytes32" },
+      { "name": "outputHash", "type": "bytes32" },
+      { "indexed": true, "name": "attester", "type": "address" },
+      { "name": "deadline", "type": "uint256" },
+      { "name": "metadataURI", "type": "string" }
+    ],
+    "name": "AttestationCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "name": "id", "type": "bytes32" },
+      { "name": "reason", "type": "string" }
+    ],
+    "name": "AttestationRevoked",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      { "name": "_modelId", "type": "bytes32" },
+      { "name": "_inputHash", "type": "bytes32" },
+      { "name": "_outputHash", "type": "bytes32" },
+      { "name": "_metadataURI", "type": "string" },
+      { "name": "_deadline", "type": "uint256" },
+      { "name": "_v", "type": "uint8" },
+      { "name": "_r", "type": "bytes32" },
+      { "name": "_s", "type": "bytes32" }
+    ],
+    "name": "createAttestation",
+    "outputs": [{ "name": "", "type": "bytes32" }],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "name": "_attestationId", "type": "bytes32" }],
+    "name": "getAttestation",
+    "outputs": [{
+      "components": [
+        { "name": "id", "type": "bytes32" },
+        { "name": "modelId", "type": "bytes32" },
+        { "name": "inputHash", "type": "bytes32" },
+        { "name": "outputHash", "type": "bytes32" },
+        { "name": "metadataURI", "type": "string" },
+        { "name": "timestamp", "type": "uint256" },
+        { "name": "isRevoked", "type": "bool" }
+      ],
+      "name": "",
+      "type": "tuple"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "name": "_modelId", "type": "bytes32" },
+      { "name": "_inputHash", "type": "bytes32" },
+      { "name": "_outputHash", "type": "bytes32" }
+    ],
+    "name": "verifyAttestation",
+    "outputs": [
+      { "name": "isValid", "type": "bool" },
+      { "name": "attestationId", "type": "bytes32" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

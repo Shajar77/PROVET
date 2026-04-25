@@ -1,0 +1,91 @@
+[
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "name": "id", "type": "bytes32" },
+      { "indexed": true, "name": "owner", "type": "address" },
+      { "name": "name", "type": "string" },
+      { "name": "version", "type": "string" },
+      { "name": "timestamp", "type": "uint256" }
+    ],
+    "name": "ModelRegistered",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "name": "id", "type": "bytes32" },
+      { "name": "newVersionHash", "type": "bytes32" },
+      { "name": "newVersion", "type": "string" },
+      { "name": "changeNotes", "type": "string" },
+      { "name": "metadataURI", "type": "string" },
+      { "name": "timestamp", "type": "uint256" }
+    ],
+    "name": "ModelUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "name": "id", "type": "bytes32" },
+      { "name": "timestamp", "type": "uint256" }
+    ],
+    "name": "ModelDeactivated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "name": "id", "type": "bytes32" },
+      { "name": "timestamp", "type": "uint256" }
+    ],
+    "name": "ModelReactivated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "name": "id", "type": "bytes32" },
+      { "name": "versionIndex", "type": "uint256" },
+      { "name": "certifiedBy", "type": "address" }
+    ],
+    "name": "ModelCertified",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      { "name": "_name", "type": "string" },
+      { "name": "_version", "type": "string" },
+      { "name": "_modelHash", "type": "bytes32" },
+      { "name": "_metadataURI", "type": "string" },
+      { "name": "_tags", "type": "string[]" }
+    ],
+    "name": "registerModel",
+    "outputs": [{ "name": "", "type": "bytes32" }],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "name": "_id", "type": "bytes32" }],
+    "name": "getModel",
+    "outputs": [{
+      "components": [
+        { "name": "id", "type": "bytes32" },
+        { "name": "owner", "type": "address" },
+        { "name": "name", "type": "string" },
+        { "name": "currentVersion", "type": "string" },
+        { "name": "modelHash", "type": "bytes32" },
+        { "name": "metadataURI", "type": "string" },
+        { "name": "registeredAt", "type": "uint256" },
+        { "name": "updatedAt", "type": "uint256" },
+        { "name": "isActive", "type": "bool" },
+        { "name": "totalVersions", "type": "uint256" },
+        { "name": "attestationsCount", "type": "uint256" }
+      ],
+      "name": "",
+      "type": "tuple"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

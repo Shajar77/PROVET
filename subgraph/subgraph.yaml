@@ -1,0 +1,57 @@
+specVersion: 1.0.0
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: ModelRegistry
+    network: base-sepolia
+    source:
+      address: "0x0000000000000000000000000000000000000000"  # TODO: Update after deployment
+      abi: ModelRegistry
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Model
+        - ModelVersion
+      abis:
+        - name: ModelRegistry
+          file: ./abis/ModelRegistry.json
+      eventHandlers:
+        - event: ModelRegistered(indexed bytes32,indexed address,string,string,uint256)
+          handler: handleModelRegistered
+        - event: ModelUpdated(indexed bytes32,bytes32,string,string,string,uint256)
+          handler: handleModelUpdated
+        - event: ModelDeactivated(indexed bytes32,uint256)
+          handler: handleModelDeactivated
+        - event: ModelReactivated(indexed bytes32,uint256)
+          handler: handleModelReactivated
+        - event: ModelCertified(indexed bytes32,uint256,address)
+          handler: handleModelCertified
+      file: ./src/modelRegistry.ts
+  - kind: ethereum
+    name: AttestationRegistry
+    network: base-sepolia
+    source:
+      address: "0x0000000000000000000000000000000000000000"  # TODO: Update after deployment
+      abi: AttestationRegistry
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Attestation
+      abis:
+        - name: AttestationRegistry
+          file: ./abis/AttestationRegistry.json
+      eventHandlers:
+        - event: AttestationCreated(indexed bytes32,indexed bytes32,bytes32,bytes32,indexed address,uint256,string)
+          handler: handleAttestationCreated
+        - event: AttestationRevoked(indexed bytes32,string)
+          handler: handleAttestationRevoked
+      file: ./src/attestationRegistry.ts
+features:
+  - ipfsOnEthereumContracts

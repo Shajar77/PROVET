@@ -1,0 +1,16 @@
+{
+  "name": "verifiable-ai-subgraph",
+  "version": "1.0.0",
+  "scripts": {
+    "codegen": "npx @graphprotocol/graph-cli codegen",
+    "build": "npx @graphprotocol/graph-cli build",
+    "deploy": "npx @graphprotocol/graph-cli deploy verifiable-ai --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs",
+    "create-local": "npx @graphprotocol/graph-cli create verifiable-ai --node http://localhost:8020",
+    "remove-local": "npx @graphprotocol/graph-cli remove verifiable-ai --node http://localhost:8020",
+    "deploy-local": "npx @graphprotocol/graph-cli deploy verifiable-ai --node http://localhost:8020 --ipfs http://localhost:5001"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "^0.86.0",
+    "@graphprotocol/graph-ts": "^0.34.0"
+  }
+}

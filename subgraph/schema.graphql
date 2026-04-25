@@ -1,0 +1,51 @@
+type Model @entity(immutable: true) {
+  id: ID!
+  modelId: Bytes!
+  owner: Bytes!
+  name: String!
+  currentVersion: String!
+  modelHash: Bytes!
+  metadataURI: String!
+  isActive: Boolean!
+  totalVersions: BigInt!
+  attestationsCount: BigInt!
+  versions: [ModelVersion!]! @derivedFrom(field: "model")
+  attestations: [Attestation!]! @derivedFrom(field: "model")
+  tags: [String!]!
+  registeredAt: BigInt!
+  updatedAt: BigInt!
+}
+
+type ModelVersion @entity(immutable: true) {
+  id: ID!
+  model: Model!
+  versionHash: Bytes!
+  version: String!
+  changeNotes: String!
+  metadataURI: String!
+  timestamp: BigInt!
+  isCertified: Boolean!
+  certifiedBy: Bytes
+}
+
+type Attestation @entity(immutable: true) {
+  id: ID!
+  attestationId: Bytes!
+  model: Model!
+  inputHash: Bytes!
+  outputHash: Bytes!
+  metadataURI: String!
+  attester: Bytes!
+  deadline: BigInt!
+  timestamp: BigInt!
+  isRevoked: Boolean!
+  revokeReason: String
+}
+
+type ProtocolStats @entity(immutable: true) {
+  id: ID!
+  totalModels: BigInt!
+  totalAttestations: BigInt!
+  activeModels: BigInt!
+  revokedAttestations: BigInt!
+}
