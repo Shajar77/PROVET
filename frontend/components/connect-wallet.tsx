@@ -91,7 +91,7 @@ function RainbowConnectButton() {
 
 export function ConnectWalletButton() {
   const [mounted, setMounted] = React.useState(false);
-  const { isWeb3Enabled, enableWeb3 } = useWeb3Context();
+  const { isWeb3Enabled, isWeb3Ready, enableWeb3 } = useWeb3Context();
 
   React.useEffect(() => {
     setMounted(true);
@@ -113,7 +113,14 @@ export function ConnectWalletButton() {
     );
   }
 
-  // Web3 enabled & RainbowKitProvider is mounted — safe to use ConnectButton.Custom
+  // Web3 enabled but WagmiProvider not yet fully mounted — show skeleton
+  if (!isWeb3Ready) {
+    return (
+      <div className="h-8 w-[140px] border border-foreground/20 bg-foreground/5 animate-pulse" />
+    );
+  }
+
+  // WagmiProvider is confirmed mounted — safe to render ConnectButton.Custom
   return (
     <React.Suspense
       fallback={

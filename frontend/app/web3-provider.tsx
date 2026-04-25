@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useWeb3Context } from "./web3-context";
 import "@rainbow-me/rainbowkit/styles.css"
 import {
   RainbowKitProvider,
@@ -49,6 +50,17 @@ const config = getDefaultConfig({
   ssr: false,
 });
 
+function Web3ProviderInner({ children }: { children: React.ReactNode }) {
+  const { setWeb3Ready } = useWeb3Context();
+
+  React.useEffect(() => {
+    // Signal that WagmiProvider + RainbowKitProvider are fully mounted
+    setWeb3Ready();
+  }, [setWeb3Ready]);
+
+  return <>{children}</>;
+}
+
 export default function Web3Provider({ children }: { children: React.ReactNode }) {
   return (
     <WagmiProvider config={config}>
@@ -66,7 +78,9 @@ export default function Web3Provider({ children }: { children: React.ReactNode }
             enableSystem={false}
             disableTransitionOnChange
           >
-            {children}
+            <Web3ProviderInner>
+              {children}
+            </Web3ProviderInner>
             <Toaster
               position="bottom-right"
               toastOptions={{
@@ -93,7 +107,7 @@ export default function Web3Provider({ children }: { children: React.ReactNode }
                 },
               }}
             />
-          </ThemeProvider>
+            </ThemeProvider>
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
