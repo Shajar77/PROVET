@@ -1,7 +1,6 @@
 import dynamic from "next/dynamic"
 import { Navbar } from "@/components/navbar"
 import { HeroSection } from "@/components/hero-section"
-import { FeatureGrid } from "@/components/feature-grid"
 
 // Lazy load below-fold components
 const AboutSection = dynamic(() => import("@/components/about-section").then(mod => ({ default: mod.AboutSection })), {
@@ -26,7 +25,6 @@ export default function Page() {
       <Navbar />
       <main>
         <HeroSection />
-        <FeatureGrid />
         <AboutSection />
         <ProtocolFeatures />
         <PricingSection />

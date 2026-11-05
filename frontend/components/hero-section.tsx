@@ -17,17 +17,6 @@ export function HeroSection() {
   return (
     <section className="relative w-full px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 pt-4 sm:pt-6 pb-8 sm:pb-12 lg:pt-10 lg:pb-16">
       <div className="flex flex-col items-center text-center">
-        {/* Status Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease }}
-          className="inline-flex items-center gap-2 px-3 py-1 border border-foreground/20 bg-background/60 backdrop-blur-xs text-[10px] font-mono uppercase tracking-widest text-muted-foreground mb-4"
-        >
-          <span className="h-1.5 w-1.5 bg-green-500 rounded-full animate-pulse" />
-          <span>PROVET PROTOCOL // LIVE ON BASE SEPOLIA</span>
-        </motion.div>
-
         {/* Top headline: PROVE. VERIFY. -- Geist Pixel Grid */}
         <motion.h1
           initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
