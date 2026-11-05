@@ -15,7 +15,7 @@ const ease = [0.22, 1, 0.36, 1] as const
 
 export function HeroSection() {
   return (
-    <section className="relative w-full px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 pt-4 sm:pt-6 pb-8 sm:pb-12 lg:pt-10 lg:pb-16">
+    <section className="relative w-full px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 pt-10 sm:pt-8 lg:pt-12 pb-4 sm:pb-6 lg:pb-8">
       <div className="flex flex-col items-center text-center">
         {/* Top headline: PROVE. VERIFY. -- Geist Pixel Grid */}
         <motion.h1

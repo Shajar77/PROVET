@@ -77,7 +77,7 @@ function StatBlock({ label, value, index }: { label: string; value: string; inde
 export function AboutSection() {
   return (
     <LazyMotion features={domAnimation}>
-    <section className="w-full px-4 sm:px-6 py-16 sm:py-20 lg:px-12">
+    <section className="w-full px-4 sm:px-6 pt-6 sm:pt-12 lg:pt-16 pb-16 sm:pb-20 lg:px-12">
       {/* Section label */}
       <m.div
         initial={{ opacity: 0, x: -20 }}
