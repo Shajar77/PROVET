@@ -2,19 +2,18 @@
 
 import * as React from "react";
 import { useWeb3Context } from "./web3-context";
-import "@rainbow-me/rainbowkit/styles.css"
+import "@rainbow-me/rainbowkit/styles.css";
 import {
   RainbowKitProvider,
   getDefaultConfig,
   lightTheme,
+  useConnectModal,
 } from "@rainbow-me/rainbowkit";
 import { WagmiProvider, http } from "wagmi";
 import { base, baseSepolia, hardhat } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "react-hot-toast";
-
-const queryClient = new QueryClient();
 
 const chains = [baseSepolia, base, hardhat] as const;
 
@@ -42,28 +41,41 @@ const rainbowTheme = (() => {
 // Reown Project ID for WalletConnect integration
 const PROJECT_ID = "14fa06d18e2d81e027a24a4edbccdfc1";
 
-const config = getDefaultConfig({
+export const wagmiConfig = getDefaultConfig({
   appName: "ROVET",
   projectId: PROJECT_ID,
   chains,
   transports,
-  ssr: false,
+  ssr: true,
 });
 
 function Web3ProviderInner({ children }: { children: React.ReactNode }) {
-  const { setWeb3Ready } = useWeb3Context();
+  const { openConnectModal } = useConnectModal();
+  const { setOpenConnectModal } = useWeb3Context();
 
   React.useEffect(() => {
-    // Signal that WagmiProvider + RainbowKitProvider are fully mounted
-    setWeb3Ready();
-  }, [setWeb3Ready]);
+    if (openConnectModal) {
+      setOpenConnectModal(openConnectModal);
+    }
+  }, [openConnectModal, setOpenConnectModal]);
 
   return <>{children}</>;
 }
 
 export default function Web3Provider({ children }: { children: React.ReactNode }) {
+  const [queryClient] = React.useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: 60 * 1000,
+          },
+        },
+      })
+  );
+
   return (
-    <WagmiProvider config={config}>
+    <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider
           appInfo={{
@@ -74,13 +86,11 @@ export default function Web3Provider({ children }: { children: React.ReactNode }
         >
           <ThemeProvider
             attribute="class"
-            defaultTheme="light"
+            defaultTheme="dark"
             enableSystem={false}
             disableTransitionOnChange
           >
-            <Web3ProviderInner>
-              {children}
-            </Web3ProviderInner>
+            <Web3ProviderInner>{children}</Web3ProviderInner>
             <Toaster
               position="bottom-right"
               toastOptions={{
@@ -107,7 +117,7 @@ export default function Web3Provider({ children }: { children: React.ReactNode }
                 },
               }}
             />
-            </ThemeProvider>
+          </ThemeProvider>
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>

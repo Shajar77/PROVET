@@ -20,66 +20,84 @@ const cardVariants = {
 export function FeatureGrid() {
   return (
     <LazyMotion features={domAnimation}>
-    <section className="w-full px-4 sm:px-6 py-16 sm:py-20 lg:px-12">
-      {/* Section label */}
-      <m.div
-        initial={{ opacity: 0, x: -20 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.5, ease }}
-        className="flex items-center gap-2 sm:gap-4 mb-6 sm:mb-8"
-      >
-        <span className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground font-mono">
-          {"// SECTION: PROTOCOL_FEATURES"}
-        </span>
-        <div className="flex-1 border-t border-border" />
-        <span className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground font-mono hidden sm:inline">004</span>
-      </m.div>
-
-      {/* 2x2 Bento Grid */}
-      <m.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-60px" }}
-        className="grid grid-cols-1 md:grid-cols-2 border-2 border-foreground"
-      >
-        {/* Terminal */}
+      <section className="w-full px-4 sm:px-6 py-16 sm:py-20 lg:px-12">
+        {/* Section label */}
         <m.div
-          custom={0}
-          variants={cardVariants}
-          className="border-b-2 md:border-b-0 md:border-r-2 border-foreground min-h-[280px]"
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.5, ease }}
+          className="flex items-center gap-2 sm:gap-4 mb-6 sm:mb-8"
         >
-          <TerminalCard />
+          <span className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground font-mono">
+            {"// SECTION: HOW_PROVET_WORKS"}
+          </span>
+          <div className="flex-1 border-t border-border" />
+          <span className="text-[10px] tracking-[0.2em] uppercase text-[#ea580c] font-mono">
+            PROTOCOL ARCHITECTURE
+          </span>
         </m.div>
 
-        {/* Dither */}
+        {/* Section Header */}
         <m.div
-          custom={1}
-          variants={cardVariants}
-          className="border-b-2 md:border-b-0 border-foreground min-h-[280px]"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6, ease }}
+          className="mb-8 sm:mb-12"
         >
-          <DitherCard />
+          <h2 className="font-pixel text-2xl sm:text-4xl lg:text-5xl tracking-tight text-foreground mb-3">
+            THE DECENTRALIZED PROVENANCE ENGINE
+          </h2>
+          <p className="text-xs sm:text-sm text-muted-foreground max-w-2xl font-mono leading-relaxed">
+            Opaque AI black boxes cannot be audited. PROVET cryptographically binds every inference output to registered model weights on Base L2 — enabling instant, trustless verification worldwide.
+          </p>
         </m.div>
 
-        {/* Metrics */}
+        {/* 2x2 Bento Grid */}
         <m.div
-          custom={2}
-          variants={cardVariants}
-          className="border-t-2 md:border-r-2 border-foreground min-h-[280px]"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          className="grid grid-cols-1 md:grid-cols-2 border-2 border-foreground bg-background"
         >
-          <MetricsCard />
-        </m.div>
+          {/* Top-Left: Provenance Pipeline */}
+          <m.div
+            custom={0}
+            variants={cardVariants}
+            className="border-b-2 md:border-b-0 md:border-r-2 border-foreground min-h-[340px]"
+          >
+            <TerminalCard />
+          </m.div>
 
-        {/* Status */}
-        <m.div
-          custom={3}
-          variants={cardVariants}
-          className="border-t-2 border-foreground min-h-[280px]"
-        >
-          <StatusCard />
+          {/* Top-Right: Interactive Tamper Detection Lab */}
+          <m.div
+            custom={1}
+            variants={cardVariants}
+            className="border-b-2 md:border-b-0 border-foreground min-h-[340px]"
+          >
+            <DitherCard />
+          </m.div>
+
+          {/* Bottom-Left: On-Chain Topology & Contract Specs */}
+          <m.div
+            custom={2}
+            variants={cardVariants}
+            className="border-t-2 md:border-r-2 border-foreground min-h-[340px]"
+          >
+            <MetricsCard />
+          </m.div>
+
+          {/* Bottom-Right: Accountability Sectors & Real-World Use Cases */}
+          <m.div
+            custom={3}
+            variants={cardVariants}
+            className="border-t-2 border-foreground min-h-[340px]"
+          >
+            <StatusCard />
+          </m.div>
         </m.div>
-      </m.div>
-    </section>
+      </section>
     </LazyMotion>
   )
 }

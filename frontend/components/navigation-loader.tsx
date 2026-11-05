@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, useTransition } from "react"
+import { useEffect, useState, useRef } from "react"
 import { usePathname, useSearchParams } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -8,12 +8,21 @@ export function NavigationLoader() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const [isLoading, setIsLoading] = useState(false)
+  const isFirstRender = useRef(true)
 
   useEffect(() => {
-    // Show loader briefly on route changes
-    setIsLoading(true)
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      return
+    }
+    const raf = requestAnimationFrame(() => {
+      setIsLoading(true)
+    })
     const timeout = setTimeout(() => setIsLoading(false), 400)
-    return () => clearTimeout(timeout)
+    return () => {
+      cancelAnimationFrame(raf)
+      clearTimeout(timeout)
+    }
   }, [pathname, searchParams])
 
   return (

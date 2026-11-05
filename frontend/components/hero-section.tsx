@@ -1,7 +1,7 @@
 "use client"
 
 import dynamic from "next/dynamic"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, ShieldCheck, CheckCircle2 } from "lucide-react"
 import { motion } from "framer-motion"
 import Link from "next/link"
 
@@ -17,6 +17,17 @@ export function HeroSection() {
   return (
     <section className="relative w-full px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 pt-4 sm:pt-6 pb-8 sm:pb-12 lg:pt-10 lg:pb-16">
       <div className="flex flex-col items-center text-center">
+        {/* Status Badge */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease }}
+          className="inline-flex items-center gap-2 px-3 py-1 border border-foreground/20 bg-background/60 backdrop-blur-xs text-[10px] font-mono uppercase tracking-widest text-muted-foreground mb-4"
+        >
+          <span className="h-1.5 w-1.5 bg-green-500 rounded-full animate-pulse" />
+          <span>PROVET PROTOCOL // LIVE ON BASE SEPOLIA</span>
+        </motion.div>
+
         {/* Top headline: PROVE. VERIFY. -- Geist Pixel Grid */}
         <motion.h1
           initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
@@ -53,35 +64,46 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.45, ease }}
-          className="text-[11px] sm:text-xs md:text-sm text-muted-foreground max-w-xs sm:max-w-sm md:max-w-md mb-5 sm:mb-6 leading-relaxed font-mono px-2 sm:px-0"
+          className="text-[11px] sm:text-xs md:text-sm text-muted-foreground max-w-md sm:max-w-lg mb-6 leading-relaxed font-mono px-2 sm:px-0"
         >
-          ROVET is the on-chain registry for AI model provenance. Register models, attest to predictions with EIP-712 signatures, and prove which AI made every decision.
+          The on-chain provenance standard for AI systems. Register neural architectures, record cryptographic EIP-712 inference receipts, and verify model accountability on Base.
         </motion.p>
 
-        {/* CTA Button */}
-        <Link href="/models">
-          <motion.button
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6, ease }}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            className="group flex items-center gap-0 bg-foreground text-background text-xs sm:text-sm font-mono tracking-wider uppercase cursor-pointer"
-          >
-            <span className="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 bg-[#ea580c]">
-              <motion.span
-                className="inline-flex"
-                whileHover={{ x: 3 }}
-                transition={{ type: "spring", stiffness: 400, damping: 20 }}
-              >
-                <ArrowRight size={16} strokeWidth={2} className="text-background" />
-              </motion.span>
-            </span>
-            <span className="px-4 sm:px-5 py-2 sm:py-2.5">
-              Browse Models
-            </span>
-          </motion.button>
-        </Link>
+        {/* Action Button Group */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.6, ease }}
+          className="flex flex-wrap items-center justify-center gap-3 sm:gap-4"
+        >
+          {/* Primary CTA */}
+          <Link href="/models">
+            <button className="group flex items-center gap-0 bg-foreground text-background text-xs sm:text-sm font-mono tracking-wider uppercase cursor-pointer hover:bg-[#ea580c] transition-colors">
+              <span className="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 bg-[#ea580c] group-hover:bg-foreground transition-colors">
+                <ArrowRight size={16} strokeWidth={2} className="text-white" />
+              </span>
+              <span className="px-4 sm:px-5 py-2 sm:py-2.5 font-bold">
+                Explore Registry
+              </span>
+            </button>
+          </Link>
+
+          {/* Secondary CTA */}
+          <Link href="/verify">
+            <button className="flex items-center gap-2 px-4 sm:px-5 py-2.5 border-2 border-foreground text-foreground text-xs sm:text-sm font-mono tracking-wider uppercase cursor-pointer hover:bg-foreground hover:text-background transition-colors">
+              <ShieldCheck size={16} strokeWidth={2} />
+              Verify Prediction
+            </button>
+          </Link>
+
+          {/* Tertiary CTA */}
+          <Link href="/attest">
+            <button className="flex items-center gap-2 px-4 sm:px-5 py-2.5 border border-foreground/30 text-muted-foreground hover:text-foreground hover:border-foreground text-xs sm:text-sm font-mono tracking-wider uppercase cursor-pointer transition-colors">
+              <CheckCircle2 size={16} />
+              Issue Attestation
+            </button>
+          </Link>
+        </motion.div>
       </div>
     </section>
   )

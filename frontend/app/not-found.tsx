@@ -10,7 +10,7 @@ export default function NotFound() {
         {/* Error code */}
         <div className="flex flex-col items-center text-center">
           <span className="text-[10px] font-mono tracking-[0.2em] uppercase text-muted-foreground mb-4">
-            // ERROR: PAGE_NOT_FOUND
+            {"// ERROR: PAGE_NOT_FOUND"}
           </span>
           
           <h1 className="font-pixel text-6xl sm:text-8xl lg:text-9xl tracking-tight text-foreground mb-2 select-none">

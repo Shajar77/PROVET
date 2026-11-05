@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
   images: {
     formats: ['image/webp', 'image/avif'],
@@ -12,10 +12,14 @@ const nextConfig = {
   reactStrictMode: true,
   experimental: {
     optimizePackageImports: ['framer-motion', 'lucide-react'],
-    optimizeServerReact: true,
   },
-  turbopack: {},
-  webpack: (config, { isServer, nextRuntime }) => {
+  webpack: (config, { isServer }) => {
+    config.resolve = config.resolve || {};
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      '@react-native-async-storage/async-storage': false,
+    };
+
     // Optimize bundle splitting
     if (!isServer) {
       config.optimization = {

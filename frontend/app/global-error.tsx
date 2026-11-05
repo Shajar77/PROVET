@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect } from "react"
+import Link from "next/link"
 import { ArrowRight, RotateCcw } from "lucide-react"
 
 export default function GlobalError({
@@ -71,7 +72,7 @@ export default function GlobalError({
                 <span className="px-5 py-2.5">Try Again</span>
               </button>
 
-              <a
+              <Link
                 href="/"
                 className="group flex items-center gap-0 border-2 border-[#F2F1EA]/20 text-[#F2F1EA] text-xs font-mono tracking-wider uppercase cursor-pointer hover:border-[#F2F1EA]/40 transition-colors"
               >
@@ -79,7 +80,7 @@ export default function GlobalError({
                   <ArrowRight size={16} strokeWidth={2} />
                 </span>
                 <span className="px-5 py-2.5">Go Home</span>
-              </a>
+              </Link>
             </div>
           </div>
         </div>

@@ -109,7 +109,7 @@ export function AboutSection() {
           {/* Image label overlay */}
           <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-4 py-2 bg-foreground/80 backdrop-blur-sm">
             <span className="text-[10px] tracking-[0.2em] uppercase text-background/60 font-mono">
-              RENDER: blockchain_verification.obj
+              NEURAL_SCAN: blockchain_verification.dither
             </span>
             <span className="text-[10px] tracking-[0.2em] uppercase text-[#ea580c] font-mono">
               LIVE
@@ -117,10 +117,10 @@ export function AboutSection() {
           </div>
 
           <Image
-            src="/images/about-isometric.jpg"
-            alt="Isometric view of AI infrastructure with server racks and data pipelines"
+            src="/images/neural-scan-dither.png"
+            alt="Neural scan dither visualization for on-chain AI provenance"
             fill
-            className="object-cover"
+            className="object-cover [image-rendering:pixelated]"
             sizes="(max-width: 1024px) 100vw, 50vw"
             priority
           />

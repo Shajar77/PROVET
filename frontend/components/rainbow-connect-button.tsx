@@ -1,0 +1,79 @@
+"use client";
+
+import * as React from "react";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+
+const BTN =
+  "h-8 px-3 sm:px-4 text-[10px] sm:text-[11px] font-mono font-semibold tracking-[0.1em] uppercase border border-orange-600 bg-orange-600 text-white hover:bg-orange-700 hover:border-orange-700 transition-all duration-200 whitespace-nowrap cursor-pointer";
+
+export default function RainbowConnectButton() {
+  return (
+    <ConnectButton.Custom>
+      {({
+        account,
+        chain,
+        openAccountModal,
+        openChainModal,
+        openConnectModal,
+        mounted: rkMounted,
+      }) => {
+        const ready = rkMounted;
+        const connected = ready && account && chain;
+
+        if (!ready) {
+          return (
+            <div className="h-8 w-[140px] border border-foreground/20 bg-foreground/5 animate-pulse" />
+          );
+        }
+
+        if (!connected) {
+          return (
+            <button onClick={openConnectModal} className={BTN}>
+              Connect Wallet
+            </button>
+          );
+        }
+
+        if (chain.unsupported) {
+          return (
+            <button
+              onClick={openChainModal}
+              className="h-8 px-3 sm:px-4 text-[10px] sm:text-[11px] font-mono font-semibold tracking-[0.1em] uppercase border border-red-600 bg-red-600 text-white hover:bg-red-700 hover:border-red-700 transition-all duration-200 whitespace-nowrap cursor-pointer"
+            >
+              Wrong Network
+            </button>
+          );
+        }
+
+        return (
+          <div className="flex items-center gap-1">
+            {/* Chain button */}
+            <button
+              onClick={openChainModal}
+              className="h-8 px-2 border border-orange-600 bg-orange-600 text-white hover:bg-orange-700 hover:border-orange-700 transition-all duration-200 cursor-pointer flex items-center"
+              title={chain.name}
+            >
+              {chain.hasIcon && chain.iconUrl ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  src={chain.iconUrl}
+                  alt={chain.name}
+                  className="w-4 h-4"
+                />
+              ) : (
+                <span className="text-[10px] font-mono font-semibold">
+                  {chain.name?.slice(0, 3).toUpperCase()}
+                </span>
+              )}
+            </button>
+
+            {/* Account button */}
+            <button onClick={openAccountModal} className={BTN}>
+              {account.displayName}
+            </button>
+          </div>
+        );
+      }}
+    </ConnectButton.Custom>
+  );
+}

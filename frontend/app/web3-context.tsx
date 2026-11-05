@@ -3,48 +3,55 @@
 import * as React from "react";
 
 interface Web3ContextType {
-  /** True once the user has clicked Connect Wallet (starts lazy loading Web3Provider) */
   isWeb3Enabled: boolean;
-  /** True only after WagmiProvider + RainbowKitProvider have fully mounted */
   isWeb3Ready: boolean;
   enableWeb3: () => void;
   setWeb3Ready: () => void;
+  setOpenConnectModal: (fn: () => void) => void;
 }
 
 const Web3Context = React.createContext<Web3ContextType | null>(null);
 
 export function Web3ContextProvider({
   children,
-  enableWeb3,
 }: {
   children: React.ReactNode;
-  enableWeb3: () => void;
 }) {
-  const [isWeb3Enabled, setIsWeb3Enabled] = React.useState(false);
-  const [isWeb3Ready, setIsWeb3ReadyState] = React.useState(false);
+  const openConnectModalRef = React.useRef<(() => void) | null>(null);
 
-  const handleEnableWeb3 = React.useCallback(() => {
-    setIsWeb3Enabled(true);
-    enableWeb3();
-  }, [enableWeb3]);
-
-  const setWeb3Ready = React.useCallback(() => {
-    setIsWeb3ReadyState(true);
+  const setOpenConnectModal = React.useCallback((fn: () => void) => {
+    openConnectModalRef.current = fn;
   }, []);
 
-  return (
-    <Web3Context.Provider
-      value={{ isWeb3Enabled, isWeb3Ready, enableWeb3: handleEnableWeb3, setWeb3Ready }}
-    >
-      {children}
-    </Web3Context.Provider>
+  const handleEnableWeb3 = React.useCallback(() => {
+    if (openConnectModalRef.current) {
+      openConnectModalRef.current();
+    }
+  }, []);
+
+  const value = React.useMemo(
+    () => ({
+      isWeb3Enabled: true,
+      isWeb3Ready: true,
+      enableWeb3: handleEnableWeb3,
+      setWeb3Ready: () => {},
+      setOpenConnectModal,
+    }),
+    [handleEnableWeb3, setOpenConnectModal]
   );
+
+  return <Web3Context.Provider value={value}>{children}</Web3Context.Provider>;
 }
+
+const fallbackContext: Web3ContextType = {
+  isWeb3Enabled: true,
+  isWeb3Ready: true,
+  enableWeb3: () => {},
+  setWeb3Ready: () => {},
+  setOpenConnectModal: () => {},
+};
 
 export function useWeb3Context() {
   const context = React.useContext(Web3Context);
-  if (!context) {
-    throw new Error("useWeb3Context must be used within Web3ContextProvider");
-  }
-  return context;
+  return context || fallbackContext;
 }

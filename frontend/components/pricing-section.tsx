@@ -1,335 +1,253 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { ArrowRight, Check, Minus } from "lucide-react"
+import { useState } from "react"
+import { ArrowRight, Check, Code2, ExternalLink, Copy } from "lucide-react"
 import { LazyMotion, domAnimation, m } from "framer-motion"
-import { BlinkDot } from "@/components/blink-dot"
+import Link from "next/link"
+import toast from "react-hot-toast"
 
 const ease = [0.22, 1, 0.36, 1] as const
 
-/* ── scramble-in price effect ── */
-function ScramblePrice({ target, prefix = "$" }: { target: string; prefix?: string }) {
-  const [display, setDisplay] = useState(target.replace(/[0-9]/g, "0"))
-
-  useEffect(() => {
-    let iterations = 0
-    const maxIterations = 18
-    const interval = setInterval(() => {
-      if (iterations >= maxIterations) {
-        setDisplay(target)
-        clearInterval(interval)
-        return
-      }
-      setDisplay(
-        target
-          .split("")
-          .map((char, i) => {
-            if (!/[0-9]/.test(char)) return char
-            if (iterations > maxIterations - 5 && i < iterations - (maxIterations - 5)) return char
-            return String(Math.floor(Math.random() * 10))
-          })
-          .join("")
-      )
-      iterations++
-    }, 50)
-    return () => clearInterval(interval)
-  }, [target])
-
-  return (
-    <span className="font-mono font-bold" style={{ fontVariantNumeric: "tabular-nums" }}>
-      {prefix}{display}
-    </span>
-  )
-}
-
-/* ── data-stream status line ── */
-function StatusLine() {
-  const [throughput, setThroughput] = useState("0.0")
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setThroughput((Math.random() * 50 + 10).toFixed(1))
-    }, 2000)
-    return () => clearInterval(interval)
-  }, [])
-
-  return (
-    <div className="flex items-center gap-2 text-[10px] tracking-widest text-muted-foreground uppercase font-mono">
-      <span className="h-1.5 w-1.5 bg-[#ea580c]" />
-      <span>live throughput: {throughput}k req/s</span>
-    </div>
-  )
-}
-
-
-
-/* ── tier config ── */
-interface Tier {
-  id: string
-  name: string
-  price: string
-  period: string
-  tag: string | null
-  description: string
-  features: { text: string; included: boolean }[]
-  cta: string
-  highlighted: boolean
-}
-
-const TIERS: Tier[] = [
+const PROTOCOL_TIERS = [
   {
-    id: "developer",
-    name: "DEVELOPER",
-    price: "0",
-    period: "/ testnet",
-    tag: null,
-    description: "Perfect for testing. Register models on Base Sepolia.",
+    name: "PUBLIC VERIFICATION",
+    fee: "FREE",
+    period: "PERPETUAL",
+    tag: "FOR AUDITORS & USERS",
+    description: "Permissionless query layer for anyone to verify whether an AI output was authentically generated.",
     features: [
-      { text: "Unlimited model registrations", included: true },
-      { text: "Testnet deployment", included: true },
-      { text: "EIP-712 signatures", included: true },
-      { text: "Version control", included: true },
-      { text: "Mainnet deployment", included: false },
-      { text: "Priority support", included: false },
+      "Query Base Sepolia AttestationRegistry",
+      "Instant EIP-712 cryptographic check",
+      "No wallet connection or token required",
+      "Public The Graph Subgraph GraphQL API",
+      "Full model version & certification history",
     ],
-    cta: "START FREE",
+    cta: "Verify a Prediction",
+    href: "/verify",
     highlighted: false,
   },
   {
-    id: "protocol",
-    name: "PROTOCOL",
-    price: "0.001",
-    period: "/ attestation",
-    tag: "RECOMMENDED",
-    description: "Pay-per-use. Only pay for attestations you create.",
+    name: "MODEL CREATOR STUDIO",
+    fee: "0 PROTOCOL FEE",
+    period: "(BASE L2 GAS ONLY)",
+    tag: "MOST ACTIVE",
+    description: "Register AI models, issue signed prediction attestations, and commit model version updates.",
     features: [
-      { text: "Mainnet deployment", included: true },
-      { text: "Unlimited attestations", included: true },
-      { text: "EIP-712 signatures", included: true },
-      { text: "Public verification API", included: true },
-      { text: "Model version history", included: true },
-      { text: "Community support", included: true },
+      "Permanent model identity & weight commit",
+      "Zero protocol tax (only standard L2 gas)",
+      "EIP-712 structured wallet signing",
+      "Full version changelogs & IPFS metadata",
+      "Deactivate & reactivate model controls",
     ],
-    cta: "REGISTER MODEL",
+    cta: "Open Creator Studio",
+    href: "/dashboard",
     highlighted: true,
   },
   {
-    id: "enterprise",
-    name: "ENTERPRISE",
-    price: "CUSTOM",
-    period: "",
-    tag: null,
-    description: "Custom integrations and dedicated support.",
+    name: "ENTERPRISE & VERIFIERS",
+    fee: "DECENTRALIZED",
+    period: "OPEN STANDARD",
+    tag: "COMPLIANCE",
+    description: "Third-party certification, regulatory compliance pipelines, and automated batch attestations.",
     features: [
-      { text: "Custom smart contracts", included: true },
-      { text: "Private attestations", included: true },
-      { text: "Dedicated RPC endpoints", included: true },
-      { text: "SLA guarantees", included: true },
-      { text: "Custom verification flows", included: true },
-      { text: "24/7 engineering support", included: true },
+      "Third-party verifier certification role",
+      "High-throughput batch registration",
+      "Automated CI/CD inference integration",
+      "Immutable audit trails for regulators",
+      "Open source TypeScript & Python SDKs",
     ],
-    cta: "CONTACT US",
+    cta: "Explore Models",
+    href: "/models",
     highlighted: false,
   },
 ]
 
-/* ── single pricing card ── */
-function PricingCard({ tier, index }: { tier: Tier; index: number }) {
-  const isCustom = tier.price === "CUSTOM"
+const SAMPLE_CODE = `import { createRovet } from "@/lib/sdk";
+import { keccak256, toBytes } from "viem";
+
+// 1. Initialize PROVET SDK on Base Sepolia
+const provet = createRovet({ chain: "baseSepolia" });
+
+// 2. Compute inference hashes
+const inputHash = keccak256(toBytes("Patient MRI Scan #1042"));
+const outputHash = keccak256(toBytes("Benign. Confidence 99.2%"));
+
+// 3. Model owner signs EIP-712 typed receipt
+const signature = await provet.generateAttestationSignature(
+  modelId, inputHash, outputHash
+);
+
+// 4. Record attestation permanently on-chain
+await provet.createAttestation({
+  modelId, inputHash, outputHash,
+  deadline: signature.deadline,
+  v: signature.v, r: signature.r, s: signature.s
+});
+
+// 5. Downstream public verification (0 gas)
+const { isValid } = await provet.verifyAttestation(
+  modelId, inputHash, outputHash
+);`;
+
+export function PricingSection() {
+  const [copiedCode, setCopiedCode] = useState(false)
+
+  const handleCopyCode = () => {
+    navigator.clipboard.writeText(SAMPLE_CODE)
+    setCopiedCode(true)
+    toast.success("SDK code copied to clipboard!")
+    setTimeout(() => setCopiedCode(false), 2000)
+  }
 
   return (
-    <m.div
-      initial={{ opacity: 0, y: 30, filter: "blur(4px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ delay: index * 0.12, duration: 0.6, ease }}
-      className={`flex flex-col h-full ${
-        tier.highlighted
-          ? "border-2 border-foreground bg-foreground text-background"
-          : "border-2 border-foreground bg-background text-foreground"
-      }`}
-    >
-      {/* Card header */}
-      <div
-        className={`flex items-center justify-between px-4 sm:px-5 py-3 border-b-2 ${
-          tier.highlighted ? "border-background/20" : "border-foreground"
-        }`}
-      >
-        <span className="text-[10px] tracking-[0.2em] uppercase font-mono">
-          {tier.name}
-        </span>
-        <div className="flex items-center gap-2">
-          {tier.tag && (
-            <span className="bg-[#ea580c] text-background text-[9px] tracking-[0.15em] uppercase px-2 py-0.5 font-mono">
-              {tier.tag}
-            </span>
-          )}
-          <span className="text-[10px] tracking-[0.2em] font-mono opacity-50">
-            {String(index + 1).padStart(2, "0")}
-          </span>
-        </div>
-      </div>
-
-      {/* Price block */}
-      <div className="px-4 sm:px-5 pt-4 sm:pt-6 pb-3 sm:pb-4">
-        <div className="flex items-baseline gap-1">
-          {isCustom ? (
-            <span className="text-2xl sm:text-3xl lg:text-4xl font-mono font-bold tracking-tight">CUSTOM</span>
-          ) : (
-            <span className="text-2xl sm:text-3xl lg:text-4xl">
-              <ScramblePrice target={tier.price} />
-            </span>
-          )}
-          {tier.period && (
-            <span
-              className={`text-xs font-mono tracking-widest uppercase ${
-                tier.highlighted ? "text-background/50" : "text-muted-foreground"
-              }`}
-            >
-              {tier.period}
-            </span>
-          )}
-        </div>
-        <p
-          className={`text-xs font-mono mt-3 leading-relaxed ${
-            tier.highlighted ? "text-background/60" : "text-muted-foreground"
-          }`}
-        >
-          {tier.description}
-        </p>
-      </div>
-
-      {/* Feature list */}
-      <div
-        className={`flex-1 px-4 sm:px-5 py-3 sm:py-4 border-t-2 ${
-          tier.highlighted ? "border-background/20" : "border-foreground"
-        }`}
-      >
-        <div className="flex flex-col gap-3">
-          {tier.features.map((feature, fi) => (
+    <LazyMotion features={domAnimation}>
+      <section className="w-full px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 py-12 sm:py-16 lg:py-24 border-t-2 border-foreground">
+        {/* Section Header */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10 sm:mb-14">
+          <div>
             <m.div
-              key={feature.text}
-              initial={{ opacity: 0, x: -8 }}
+              initial={{ opacity: 0, x: -16 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.12 + 0.3 + fi * 0.04, duration: 0.35, ease }}
-              className="flex items-start gap-3"
+              transition={{ duration: 0.5, ease }}
+              className="flex items-center gap-2 mb-3"
             >
-              {feature.included ? (
-                <Check
-                  size={12}
-                  strokeWidth={2.5}
-                  className="mt-0.5 shrink-0 text-[#ea580c]"
-                />
-              ) : (
-                <Minus
-                  size={12}
-                  strokeWidth={2}
-                  className={`mt-0.5 shrink-0 ${
-                    tier.highlighted ? "text-background/30" : "text-muted-foreground/40"
-                  }`}
-                />
-              )}
-              <span
-                className={`text-xs font-mono leading-relaxed ${
-                  feature.included
-                    ? ""
-                    : tier.highlighted
-                    ? "text-background/30 line-through"
-                    : "text-muted-foreground/40 line-through"
+              <span className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground font-mono">
+                {"// PROTOCOL: ARCHITECTURE_&_ACCESS"}
+              </span>
+            </m.div>
+            <h2 className="font-pixel text-2xl sm:text-4xl lg:text-5xl tracking-tight text-foreground">
+              PROTOCOL ACCESS & ECONOMICS
+            </h2>
+          </div>
+
+          <div className="text-right">
+            <span className="text-xs font-mono text-muted-foreground block">
+              NETWORK: BASE SEPOLIA (ETHEREUM L2)
+            </span>
+            <span className="text-[10px] font-mono text-[#ea580c] uppercase tracking-wider">
+              ZERO PROTOCOL TAX // OPEN STANDARD
+            </span>
+          </div>
+        </div>
+
+        {/* 3 Protocol Pillars Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 mb-12">
+          {PROTOCOL_TIERS.map((tier, index) => (
+            <m.div
+              key={tier.name}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1, duration: 0.5, ease }}
+              className={`flex flex-col justify-between border-2 border-foreground p-6 ${
+                tier.highlighted ? "bg-foreground text-background" : "bg-background text-foreground"
+              }`}
+            >
+              <div>
+                <div className="flex items-center justify-between pb-3 border-b border-current/20 mb-4">
+                  <span className="text-[10px] font-mono tracking-widest uppercase font-bold">
+                    {tier.name}
+                  </span>
+                  {tier.tag && (
+                    <span className="text-[9px] font-mono uppercase px-2 py-0.5 bg-[#ea580c] text-white font-bold">
+                      {tier.tag}
+                    </span>
+                  )}
+                </div>
+
+                <div className="mb-4">
+                  <div className="text-2xl font-mono font-bold">{tier.fee}</div>
+                  <span className="text-[10px] font-mono opacity-60 uppercase">{tier.period}</span>
+                </div>
+
+                <p className="text-xs font-mono leading-relaxed opacity-80 mb-6">
+                  {tier.description}
+                </p>
+
+                <div className="space-y-2 mb-8">
+                  {tier.features.map((feat) => (
+                    <div key={feat} className="flex items-center gap-2 text-xs font-mono">
+                      <Check size={14} className="text-[#ea580c] flex-shrink-0" />
+                      <span>{feat}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <Link
+                href={tier.href}
+                className={`w-full py-3 text-center text-xs font-mono font-bold uppercase tracking-wider transition-colors inline-flex items-center justify-center gap-2 ${
+                  tier.highlighted
+                    ? "bg-[#ea580c] text-white hover:bg-[#c2410c]"
+                    : "border-2 border-foreground hover:bg-foreground hover:text-background"
                 }`}
               >
-                {feature.text}
-              </span>
+                {tier.cta}
+                <ArrowRight size={14} />
+              </Link>
             </m.div>
           ))}
         </div>
-      </div>
 
-      {/* CTA */}
-      <div className="px-4 sm:px-5 pb-4 sm:pb-5 pt-2 sm:pt-3">
-        <m.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.97 }}
-          className={`group w-full flex items-center justify-center gap-0 text-xs font-mono tracking-wider uppercase ${
-            tier.highlighted
-              ? "bg-background text-foreground"
-              : "bg-foreground text-background"
-          }`}
+        {/* Developer Integration Code Block */}
+        <m.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease }}
+          className="border-2 border-foreground bg-background overflow-hidden"
         >
-          <span className="flex items-center justify-center w-9 h-9 bg-[#ea580c]">
-            <ArrowRight size={14} strokeWidth={2} className="text-background" />
-          </span>
-          <span className="flex-1 py-2.5">{tier.cta}</span>
-        </m.button>
-      </div>
-    </m.div>
-  )
-}
+          <div className="flex items-center justify-between px-5 py-3 bg-foreground text-background border-b-2 border-foreground">
+            <div className="flex items-center gap-2">
+              <Code2 size={16} className="text-[#ea580c]" />
+              <span className="text-[10px] font-mono tracking-widest uppercase font-bold">
+                DEVELOPER_SDK // INFERENCE_INTEGRATION.TS
+              </span>
+            </div>
 
-/* ── main pricing section ── */
-export function PricingSection() {
-  return (
-    <LazyMotion features={domAnimation}>
-    <section className="w-full px-4 sm:px-6 py-16 sm:py-20 lg:px-12">
-      {/* Section label */}
-      <m.div
-        initial={{ opacity: 0, x: -20 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.5, ease }}
-        className="flex items-center gap-2 sm:gap-4 mb-6 sm:mb-8"
-      >
-        <span className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground font-mono">
-          {"// SECTION: PRICING_TIERS"}
-        </span>
-        <div className="flex-1 border-t border-border" />
-        <BlinkDot />
-        <span className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground font-mono">
-          006
-        </span>
-      </m.div>
+            <button
+              onClick={handleCopyCode}
+              className="text-[10px] font-mono uppercase tracking-wider text-background/80 hover:text-white flex items-center gap-1 cursor-pointer"
+            >
+              {copiedCode ? <Check size={12} className="text-green-400" /> : <Copy size={12} />}
+              {copiedCode ? "Copied" : "Copy Code"}
+            </button>
+          </div>
 
-      {/* Section header */}
-      <m.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: 0.6, ease }}
-        className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 sm:gap-6 mb-8 sm:mb-12"
-      >
-        <div className="flex flex-col gap-3">
-          <h2 className="text-xl sm:text-2xl lg:text-3xl font-mono font-bold tracking-tight uppercase text-foreground text-balance">
-            Select your protocol tier
-          </h2>
-          <p className="text-[11px] sm:text-xs lg:text-sm font-mono text-muted-foreground leading-relaxed max-w-md">
-            Start free on testnet. Pay only for attestations on mainnet. All tiers include EIP-712 signatures and on-chain verification.
-          </p>
-        </div>
-        <StatusLine />
-      </m.div>
+          <div className="p-4 sm:p-6 bg-[#0f0f0f] text-[#F2F1EA] overflow-x-auto">
+            <pre className="font-mono text-xs leading-relaxed text-[#F2F1EA]/90">
+              <code>{SAMPLE_CODE}</code>
+            </pre>
+          </div>
 
-      {/* Pricing grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
-        {TIERS.map((tier, i) => (
-          <PricingCard key={tier.id} tier={tier} index={i} />
-        ))}
-      </div>
-
-      {/* Bottom note */}
-      <m.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.5, duration: 0.5, ease }}
-        className="flex items-center gap-3 mt-6"
-      >
-        <span className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground font-mono">
-          {"* Gas fees apply for on-chain transactions. Protocol tier pays per attestation."}
-        </span>
-        <div className="flex-1 border-t border-border" />
-      </m.div>
-    </section>
+          <div className="px-5 py-3 border-t border-foreground/20 bg-background flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono">
+            <span className="text-muted-foreground text-[11px]">
+              EIP-712 Standard: Compatible with Python Web3.py, Node.js Viem, and Ethers.js
+            </span>
+            <div className="flex items-center gap-4">
+              <a
+                href="https://sepolia.basescan.org/address/0x301651C55623E5B022b35e22d7c3935b3fAfBc8F"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#ea580c] hover:underline flex items-center gap-1"
+              >
+                ModelRegistry on BaseScan
+                <ExternalLink size={12} />
+              </a>
+              <a
+                href="https://sepolia.basescan.org/address/0x3337BA7Ea7E2dEAd933d2d716407C0Bf003bD247"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#ea580c] hover:underline flex items-center gap-1"
+              >
+                AttestationRegistry on BaseScan
+                <ExternalLink size={12} />
+              </a>
+            </div>
+          </div>
+        </m.div>
+      </section>
     </LazyMotion>
   )
 }

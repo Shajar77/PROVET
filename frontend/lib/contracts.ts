@@ -58,6 +58,13 @@ export const MODEL_REGISTRY_ABI: Abi = [
   },
   {
     inputs: [{ name: '_modelId', type: 'bytes32' }],
+    name: 'reactivateModel',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ name: '_modelId', type: 'bytes32' }],
     name: 'getModel',
     outputs: [{
       components: [

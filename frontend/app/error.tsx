@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect } from "react"
+import Link from "next/link"
 import { Navbar } from "@/components/navbar"
 import { ArrowRight, RotateCcw } from "lucide-react"
 import { motion } from "framer-motion"
@@ -71,7 +72,7 @@ export default function Error({
               <span className="px-5 py-2.5">Try Again</span>
             </motion.button>
 
-            <a
+            <Link
               href="/"
               className="group flex items-center gap-0 border-2 border-foreground/20 text-foreground text-xs font-mono tracking-wider uppercase cursor-pointer hover:border-foreground/40 transition-colors"
             >
@@ -79,7 +80,7 @@ export default function Error({
                 <ArrowRight size={16} strokeWidth={2} />
               </span>
               <span className="px-5 py-2.5">Go Home</span>
-            </a>
+            </Link>
           </div>
         </motion.div>
       </main>

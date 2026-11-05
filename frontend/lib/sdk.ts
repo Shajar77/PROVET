@@ -209,6 +209,32 @@ export class Rovet {
   }
 
   /**
+   * Reactivate a model
+   */
+  async reactivateModel(modelId: Hash): Promise<TransactionResult<Hash>> {
+    try {
+      const walletClient = this.getWalletClient();
+      const [account] = await walletClient.getAddresses();
+
+      const hash = await walletClient.writeContract({
+        address: this.modelRegistryAddress,
+        abi: MODEL_REGISTRY_ABI,
+        functionName: 'reactivateModel',
+        args: [modelId],
+        account,
+      });
+
+      return {
+        success: true,
+        hash,
+        data: hash,
+      };
+    } catch (error) {
+      return this.handleError<Hash>(error, 'Failed to reactivate model');
+    }
+  }
+
+  /**
    * Get a model by ID
    */
   async getModel(modelId: Hash): Promise<Model | null> {

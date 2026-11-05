@@ -9,10 +9,10 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import { ConnectWalletButton } from "@/components/connect-wallet"
 
 const navLinks = [
-  { name: "Home", href: "/" },
-  { name: "Browse", href: "/models" },
+  { name: "Explore", href: "/models" },
   { name: "Verify", href: "/verify" },
-  { name: "Dashboard", href: "/dashboard" },
+  { name: "Attest", href: "/attest" },
+  { name: "Studio", href: "/dashboard" },
 ]
 
 export function Navbar() {
@@ -20,9 +20,11 @@ export function Navbar() {
   const pathname = usePathname()
 
   // Close mobile menu on route change
-  useEffect(() => {
+  const [prevPathname, setPrevPathname] = useState(pathname)
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname)
     setMobileMenuOpen(false)
-  }, [pathname])
+  }
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
@@ -46,14 +48,14 @@ export function Navbar() {
       <nav className="w-full border border-foreground/20 bg-background/80 backdrop-blur-sm px-3 sm:px-4 py-3 md:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo - Left */}
-          <Link href="/" className="flex-shrink-0">
+          <Link href="/" className="flex items-center gap-3 flex-shrink-0 group">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.4 }}
-              className="cursor-pointer"
+              className="cursor-pointer flex items-center gap-2.5"
             >
-              <svg width="32" height="32" viewBox="0 0 72 72" className="shrink-0 sm:w-9 sm:h-9">
+              <svg width="30" height="30" viewBox="0 0 72 72" className="shrink-0 group-hover:rotate-45 transition-transform duration-300">
                 {/* Orange circle ring */}
                 <circle cx="36" cy="36" r="34" fill="none" stroke="#ea580c" strokeWidth="2" />
                 {/* Asterisk/star shape */}
@@ -62,6 +64,10 @@ export function Navbar() {
                 <line x1="24" y1="24" x2="48" y2="48" stroke="hsl(var(--foreground))" strokeWidth="2" />
                 <line x1="48" y1="24" x2="24" y2="48" stroke="hsl(var(--foreground))" strokeWidth="2" />
               </svg>
+              <div className="flex flex-col">
+                <span className="font-pixel text-sm tracking-widest font-bold text-foreground">PROVET</span>
+                <span className="text-[8px] font-mono tracking-[0.2em] text-[#ea580c] uppercase">BASE L2</span>
+              </div>
             </motion.div>
           </Link>
 

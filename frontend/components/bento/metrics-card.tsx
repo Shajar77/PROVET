@@ -1,79 +1,95 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { ExternalLink, Database } from "lucide-react"
 
-interface ScrambleNumberProps {
-  target: string
-  label: string
-  delay?: number
-}
+const CONTRACTS = [
+  {
+    name: "ModelRegistry.sol",
+    address: "0x301651C55623E5B022b35e22d7c3935b3fAfBc8F",
+    role: "Architectures, versioning, weight commitments & certified verifiers",
+    url: "https://sepolia.basescan.org/address/0x301651C55623E5B022b35e22d7c3935b3fAfBc8F",
+  },
+  {
+    name: "AttestationRegistry.sol",
+    address: "0x3337BA7Ea7E2dEAd933d2d716407C0Bf003bD247",
+    role: "EIP-712 typed signature validation, replay deadlines & prediction receipts",
+    url: "https://sepolia.basescan.org/address/0x3337BA7Ea7E2dEAd933d2d716407C0Bf003bD247",
+  },
+]
 
-function ScrambleNumber({ target, label, delay = 0 }: ScrambleNumberProps) {
-  const [display, setDisplay] = useState(target.replace(/[0-9]/g, "0"))
-  const [scrambling, setScrambling] = useState(false)
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setScrambling(true)
-      let iterations = 0
-      const maxIterations = 20
-
-      const interval = setInterval(() => {
-        if (iterations >= maxIterations) {
-          setDisplay(target)
-          setScrambling(false)
-          clearInterval(interval)
-          return
-        }
-
-        setDisplay(
-          target
-            .split("")
-            .map((char, i) => {
-              if (!/[0-9]/.test(char)) return char
-              if (iterations > maxIterations - 5 && i < iterations - (maxIterations - 5)) return char
-              return String(Math.floor(Math.random() * 10))
-            })
-            .join("")
-        )
-        iterations++
-      }, 50)
-
-      return () => clearInterval(interval)
-    }, delay)
-
-    return () => clearTimeout(timeout)
-  }, [target, delay])
-
-  return (
-    <div className="flex flex-col gap-1">
-      <span
-        className="text-4xl lg:text-5xl font-mono font-bold tracking-tight text-foreground"
-        style={{ fontVariantNumeric: "tabular-nums" }}
-      >
-        {display}
-      </span>
-      <span className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground">
-        {label}
-      </span>
-    </div>
-  )
-}
+const SPECS = [
+  { label: "SETTLEMENT LAYER", value: "Base Sepolia L2" },
+  { label: "VERIFICATION COST", value: "0 Gas (Public)" },
+  { label: "PROTOCOL TAX", value: "0% Free Standard" },
+  { label: "SIGNATURE FORMAT", value: "EIP-712 Typed" },
+]
 
 export function MetricsCard() {
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between border-b-2 border-foreground px-4 py-2">
-        <span className="text-[10px] tracking-widest text-muted-foreground uppercase">
-          inference.metrics
+    <div className="flex flex-col h-full bg-background">
+      {/* Header */}
+      <div className="flex items-center justify-between border-b-2 border-foreground px-4 py-2.5 bg-foreground text-background">
+        <div className="flex items-center gap-2">
+          <Database size={12} className="text-[#ea580c]" />
+          <span className="text-[10px] tracking-widest uppercase font-mono font-bold">
+            ONCHAIN_TOPOLOGY
+          </span>
+        </div>
+        <span className="text-[10px] font-mono text-[#ea580c] uppercase">
+          BASE L2 INFRASTRUCTURE
         </span>
-        <span className="inline-block h-2 w-2 bg-[#ea580c]" />
       </div>
-      <div className="flex-1 flex flex-col justify-center gap-6 p-6">
-        <ScrambleNumber target="4.2ms" label="Avg Latency" delay={500} />
-        <ScrambleNumber target="12.8K" label="Requests / sec" delay={800} />
-        <ScrambleNumber target="99.97%" label="Uptime" delay={1100} />
-        <ScrambleNumber target="147" label="Models Deployed" delay={1400} />
+
+      <div className="flex-1 p-4 sm:p-5 flex flex-col justify-between space-y-4">
+        {/* Deployed Contracts List */}
+        <div className="space-y-2.5">
+          <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest block">
+            Verified Protocol Contracts:
+          </span>
+
+          {CONTRACTS.map((c) => (
+            <div
+              key={c.name}
+              className="border border-foreground/20 p-2.5 bg-foreground/5 space-y-1 text-xs font-mono"
+            >
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-foreground text-[11px] flex items-center gap-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
+                  {c.name}
+                </span>
+                <a
+                  href={c.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[10px] text-[#ea580c] hover:underline flex items-center gap-1"
+                >
+                  BaseScan
+                  <ExternalLink size={10} />
+                </a>
+              </div>
+              <div className="text-[10px] text-muted-foreground break-all">
+                {c.address.slice(0, 18)}...{c.address.slice(-10)}
+              </div>
+              <p className="text-[10px] text-muted-foreground/90 leading-tight">
+                {c.role}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* Protocol Engine Specs */}
+        <div className="grid grid-cols-2 gap-2 pt-2 border-t border-foreground/15">
+          {SPECS.map((s) => (
+            <div key={s.label} className="border border-foreground/15 p-2 bg-background">
+              <span className="text-[9px] font-mono uppercase text-muted-foreground block">
+                {s.label}
+              </span>
+              <span className="text-xs font-mono font-bold text-foreground">
+                {s.value}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )

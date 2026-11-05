@@ -16,9 +16,9 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'ROVET | On-Chain Model Provenance Protocol',
+  title: 'PROVET | On-Chain AI Model Provenance & Attestation Protocol',
   description:
-    'Register AI models on-chain, attest to predictions with cryptographic signatures, and verify which model made every decision. Built on Base with EIP-712 signatures for transparent AI accountability.',
+    'Register AI models on-chain, attest to predictions with EIP-712 cryptographic signatures, and verify which model made every decision. Built on Base for transparent AI accountability.',
   keywords: [
     'ROVET',
     'AI model registry',

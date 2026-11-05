@@ -1,7 +1,7 @@
 "use client"
 
 import { LazyMotion, domAnimation, m } from "framer-motion"
-import { Github, Twitter, ArrowRight } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import Link from "next/link"
 
 const ease = [0.22, 1, 0.36, 1] as const
